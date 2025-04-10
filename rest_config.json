@@ -1,0 +1,25 @@
+{
+    "rest": {
+      "RestGenerator": {
+        "name": "OpenAI GPT-4o via REST",
+        "uri": "https://api.openai.com/v1/chat/completions",
+        "method": "post",
+        "headers": {
+          "Authorization": "Bearer $KEY",
+          "Content-Type": "application/json"
+        },
+        "key_env_var": "OPENAI_API_KEY",
+        "req_template_json_object": {
+          "model": "gpt-4o",
+          "messages": [
+            { "role": "user", "content": "$INPUT" }
+          ],
+          "temperature": 0.7
+        },
+        "response_json": true,
+        "response_json_field": "$.choices[0].message.content",
+        "request_timeout": 120
+      }
+    }
+  }
+  
