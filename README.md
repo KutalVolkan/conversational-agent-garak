@@ -1,4 +1,4 @@
-# Garak GPT-4o Assistant
+# Conversational Agent with Garak + GPT-4o
 
 Garak GPT-4o Assistant is a web application that provides a chat interface to a GPT-4o assistant enhanced with Garak (an LLM vulnerability scanner) tool functions. The assistant can list and describe Garak probes, run vulnerability scans on a configured model, and summarize scan results. It leverages OpenAI's function calling so that GPT-4o can autonomously use Garak's CLI tools under the hood. The backend is built with FastAPI, and the frontend is implemented with React.
 
@@ -33,8 +33,8 @@ Garak GPT-4o Assistant is a web application that provides a chat interface to a 
 #### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/garak-gpt4o-assistant.git
-cd garak-gpt4o-assistant
+git clone https://github.com/KutalVolkan/conversational-agent-garak.git
+cd conversational-agent-garak
 ```
 
 #### 2. Set Up the Backend
@@ -156,7 +156,7 @@ The assistant will respond based on the conversation context and determine when 
 ## Project Structure
 
 ```
-garak-gpt4o-assistant/
+conversational-agent-garak/
 ├── backend/
 │   ├── __init__.py                   # Marks backend as a Python package.
 │   ├── app.py                        # FastAPI server entry point.
@@ -200,7 +200,8 @@ To reset your conversation history and clear scan logs, use the "Clear History" 
 
 ## License
 
-Apache license v2
+This project follows the same license as [Garak](https://github.com/NVIDIA/garak/blob/main/LICENSE), which is licensed under the Apache License 2.0.
+
 
 ---
 
