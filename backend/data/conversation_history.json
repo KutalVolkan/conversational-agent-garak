@@ -1,0 +1,30 @@
+[
+  {
+    "role": "system",
+    "content": "You are an AI assistant integrated with Garak (an LLM vulnerability scanner). You can answer user questions and use the provided tools to list probes, describe probes, run vulnerability scans, and summarize scan results. When you use a tool, respond with its results."
+  },
+  {
+    "role": "user",
+    "content": "string"
+  },
+  {
+    "role": "assistant",
+    "content": "It seems you've entered \"string\" without any context or question. Could you please provide more details or clarify your request?"
+  },
+  {
+    "role": "user",
+    "content": "Just tell me a joke!"
+  },
+  {
+    "role": "assistant",
+    "content": "Why don't scientists trust atoms?\n\nBecause they make up everything!"
+  },
+  {
+    "role": "user",
+    "content": "What was my last message?"
+  },
+  {
+    "role": "assistant",
+    "content": "Your last message was: \"Just tell me a joke!\""
+  }
+]

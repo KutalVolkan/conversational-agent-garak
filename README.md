@@ -1,144 +1,212 @@
 # Garak GPT-4o Assistant
 
-This is a **Streamlit application** that provides a chat interface to a GPT-4o assistant enhanced with **Garak** (LLM vulnerability scanner) tool functions. The assistant can list and describe Garak probes, run vulnerability scans on a configured model, and summarize the results. It uses OpenAI's **function calling** to let GPT-4o autonomously use Garak's CLI under the hood.
+Garak GPT-4o Assistant is a web application that provides a chat interface to a GPT-4o assistant enhanced with Garak (an LLM vulnerability scanner) tool functions. The assistant can list and describe Garak probes, run vulnerability scans on a configured model, and summarize scan results. It leverages OpenAI's function calling so that GPT-4o can autonomously use Garak's CLI tools under the hood. The backend is built with FastAPI, and the frontend is implemented with React.
 
 ---
 
-## ✨ Features
+## Features
 
-- 💬 **Conversational Interface** – Chat with GPT-4o in a web UI.
-- 🧪 **Garak Integration** – GPT-4o can call Garak’s CLI to:
-  - list available probes
-  - describe specific probes
-  - run a scan
-  - summarize the scan
-- 💾 **Persistent History** – Conversation state is stored between sessions.
-- 🧼 **Clearable Session** – Reset chat + scan logs from the sidebar.
-- 🧠 **Context-aware** – GPT-4o uses memory to continue discussions across steps.
+- **Conversational Interface** – Interact with GPT-4o through an intuitive web UI.
+- **Garak Integration** – GPT-4o can invoke Garak’s CLI to:
+  - List available probes
+  - Describe specific probes
+  - Run a vulnerability scan
+  - Summarize the scan results
+- **Persistent History** – Conversations are stored persistently on disk.
+- **Session Management** – Ability to reset chat and scan logs.
+- **Context-Aware** – GPT-4o uses conversation context to guide its responses.
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
-### ✅ Prerequisites
+### Prerequisites
 
-- Python 3.9+
+- Python >= 3.10
+- Node.js and npm (for the React frontend)
 - OpenAI API key with access to GPT-4o
 - Garak installed (`pip install garak`)
-- A Garak REST config file (e.g. `rest_config.json`) that points to your model (e.g. OpenAI GPT-4o or local API)
+- A Garak REST configuration file (e.g. `rest_config.json`) that points to your model (for example, OpenAI GPT-4o or another local API)
 
----
+### Installation
 
-### ⚙️ Installation
-
-#### 1. Clone the repository
+#### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/streamlit-garak-app.git
-cd streamlit-garak-app
+git clone https://github.com/yourusername/garak-gpt4o-assistant.git
+cd garak-gpt4o-assistant
 ```
 
-#### 2. Create and activate a virtual environment
+#### 2. Set Up the Backend
 
-**macOS / Linux**
+- **Create and Activate a Virtual Environment**
+
+  **macOS / Linux:**
+  ```bash
+  python3 -m venv .venv
+  source .venv/bin/activate
+  ```
+
+  **Windows (Command Prompt):**
+  ```cmd
+  python -m venv .venv
+  .venv\Scripts\activate
+  ```
+
+  **Windows (PowerShell):**
+  ```powershell
+  python -m venv .venv
+  .venv\Scripts\Activate.ps1
+  ```
+
+- **Install Python Dependencies**
+
+  ```bash
+  cd backend
+  pip install -r requirements.txt
+  ```
+
+- **Configure Your API Key**
+
+  Create a `.env` file in the backend directory and add your OpenAI key:
+
+  ```env
+  OPENAI_API_KEY=sk-...
+  ```
+
+- **Configure Garak**
+
+  Ensure your Garak REST configuration file (`rest_config.json`) is placed in the `backend/rest_target/` directory.
+
+#### 3. Set Up the Frontend
+
+- Navigate to the frontend directory and install dependencies:
+
+  ```bash
+  cd ../frontend
+  npm install
+  ```
+
+---
+
+## Running the Application
+
+### Start the Backend
+
+From the project root, run:
+
 ```bash
-python3 -m venv .venv
-source .venv/bin/activate
+uvicorn backend.app:app --host 0.0.0.0 --port 8000 --reload
 ```
 
-**Windows (Command Prompt)**
-```cmd
-python -m venv .venv
-.venv\Scripts\activate
-```
+This will start the FastAPI backend server at **http://127.0.0.1:8000**.
 
-**Windows (PowerShell)**
-```powershell
-python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-```
+### Start the Frontend
 
-#### 3. Install dependencies
+From the `frontend` directory, run:
 
 ```bash
-pip install -r requirements.txt
+npm start
 ```
 
-> If you don’t have `garak` already installed, you can also do:
-> ```bash
-> pip install garak
-> ```
+Access the application in your browser at the URL provided by your React development server (typically [http://localhost:3000](http://localhost:3000)).
 
-#### 4. Configure your API key
+---
 
-Create a `.env` file in the project root and add your OpenAI key:
+### Manually Test the Backend via Swagger UI
 
-```env
-OPENAI_API_KEY=sk-...
+FastAPI automatically generates interactive API documentation using **Swagger UI**.
+
+To test the API manually without the frontend:
+
+1. Start the backend server as described above.
+2. Open your browser and go to: [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs)
+3. You'll see a list of available API routes under **Garak GPT-4o Assistant API**.
+4. Click on the `POST /api/chat` endpoint.
+5. Click **"Try it out"**, and enter a sample request body:
+
+```json
+{
+  "message": "Hello, assistant!"
+}
 ```
 
-Or set it in your terminal session before running the app.
+6. Click **"Execute"**. The server will respond with a chat reply and current conversation history.
+7. You can also test:
+   - `GET /api/history` – Returns full conversation history
+   - `POST /api/clear` – Clears current conversation state and related files
+
+This is the easiest way to test and debug your backend functionality independently.
 
 ---
 
-### ▶️ Run the app
+## Example Use Cases
 
-```bash
-streamlit run app.py
-```
+You can interact with the assistant via the chat interface by typing commands such as:
 
-Then open your browser to: [http://localhost:8501](http://localhost:8501)
+- "What probes are available?"
+- "Describe the lmrc.Profanity probe."
+- "Run a scan using promptinject and goodside probes."
+- "Summarize the last scan."
 
----
-
-## 🧠 Example Use Cases
-
-You can simply type in the chat:
-
-- `What probes are available?`
-- `Describe the lmrc.Profanity probe.`
-- `Run a scan using promptinject and goodside probes.`
-- `Summarize the last scan.`
-
-The assistant will respond, decide when to run tools, and maintain context.
+The assistant will respond based on the conversation context and determine when to invoke Garak tool functions.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
-streamlit_garak_app/
-├── app.py              # Streamlit UI + chat interface
-├── agent.py            # GPT-4o assistant logic (function calling, memory)
-├── garak_tools.py      # CLI integration for Garak tool functions
-├── rest_config.json    # Example config (for scanning GPT-4o via REST)
-├── requirements.txt
-├── .env                # Your OpenAI API key (not committed)
-└── README.md
+garak-gpt4o-assistant/
+├── backend/
+│   ├── __init__.py                   # Marks backend as a Python package.
+│   ├── app.py                        # FastAPI server entry point.
+│   ├── agent.py                      # GPT-4o assistant logic (function calling, persistence).
+│   ├── config.py                     # Central configuration module (paths and settings).
+│   ├── garak_tools.py                # CLI integration for Garak tool functions.
+│   ├── rest_target/
+│   │   └── rest_config.json          # Garak REST configuration.
+│   ├── data/
+│   │   └── conversation_history.json # Stored chat history.
+│   ├── logs/                         # Log files (runtime or scan logs).
+│   └── reports/                      # Garak scan reports.
+├── frontend/
+│   ├── public/                       # Public assets.
+│   ├── src/
+│   │   ├── components/               # Reusable components.
+│   │   └── App.jsx                   # Main application component.
+│   └── package.json                  # Frontend dependencies and scripts.
+├── .env                              # Backend environment variables.
+├── .env.example                      # Example environment file.
+├── .gitignore                        # Git ignore file.
+├── requirements.txt                  # Backend Python dependencies.
+└── README.md                         # Project overview
 ```
 
 ---
 
-## 🧹 Resetting the Session
+## Session Management
 
-Use the **"Clear History"** button in the sidebar to reset chat, scan logs, and memory.
-
----
-
-## 🔐 Security
-
-Only defined tools are callable by GPT-4o via function calling. All subprocess access to Garak is controlled. Conversation data is stored locally for persistence only.
+To reset your conversation history and clear scan logs, use the "Clear History" functionality provided by the application or call the `/api/clear` endpoint.
 
 ---
 
-## 📜 License
+## Security
 
-MIT
+- Only pre-defined tool functions are callable via function calling.
+- All subprocess access to Garak is controlled.
+- Conversation data is stored locally for persistence only.
 
 ---
 
-## 🙌 Acknowledgments
+## License
 
-- [NVIDIA Garak](https://github.com/NVIDIA/garak) – LLM red teaming & robustness scanner
-- [OpenAI](https://platform.openai.com/docs/guides/gpt) – GPT-4o assistant
-- [Streamlit](https://streamlit.io) – The easiest way to build Python apps
+Apache license v2
+
+---
+
+## Acknowledgments
+
+- [NVIDIA Garak](https://github.com/NVIDIA/garak) – LLM red teaming and robustness scanner.
+- [OpenAI](https://platform.openai.com/docs/guides/gpt) – GPT-4o assistant.
+- [FastAPI](https://fastapi.tiangolo.com) – Modern, fast Python web framework.
+- [React](https://reactjs.org) – JavaScript library for building user interfaces.

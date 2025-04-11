@@ -13,6 +13,8 @@ from datetime import datetime
 from typing import List, Dict, Any
 from garak.report import Report
 
+from backend.config import REPORTS_DIR, LOGS_DIR, REST_CONFIG_PATH
+
 # Configure logging
 logging.basicConfig(
     level=logging.DEBUG, 
@@ -109,7 +111,7 @@ def describe_feature(name: str) -> str:
 
 
 def scan_model_rest(
-    config_file: str = "rest_config.json",
+    config_file: str = REST_CONFIG_PATH,
     probes: List[str] = None,
     generations: int = 1
 ) -> str:
@@ -131,7 +133,7 @@ def scan_model_rest(
     # Ensure config_file and report directory use absolute paths
     config_file = os.path.abspath(config_file)
     logger.debug("Using config file: %s", config_file)
-    reports_dir = os.path.join(cwd, "reports")
+    reports_dir = REPORTS_DIR
     os.makedirs(reports_dir, exist_ok=True)
     
     # Set report prefix as an absolute path.
@@ -156,7 +158,7 @@ def scan_model_rest(
     if adjusted_probes:
         cmd += ["--probes", ",".join(adjusted_probes)]
     
-    log_path = os.path.join(cwd, "scan_output.log")
+    log_path = os.path.join(LOGS_DIR, "scan_output.log")
     try:
         with open(log_path, "w", encoding="utf-8") as log_file:
             log_file.write("Running Garak command:\n" + " ".join(cmd) + "\n")
@@ -217,7 +219,7 @@ def summarize_report() -> Dict[str, Any]:
     Returns:
         Dict[str, Any]: A detailed summary of the report.
     """
-    report_files = glob.glob("reports/*.report.jsonl")
+    report_files = glob.glob(os.path.join(REPORTS_DIR, "*.report.jsonl"))
     if not report_files:
         return {"error": "No report found."}
 

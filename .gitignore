@@ -1,9 +1,31 @@
-.env
-.venv
+# Python virtual environment
+.venv/
 
-reports
+# Environment variables
+.env
+.env.*
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Logs
+logs/
+*.log
+
+# Garak scan outputs
+reports/
 scan_output.log
 
-__pycache__
+# Local conversation memory
+data/conversation_history.json
 
-conversation_history.json
+# VS Code settings (optional, if using VS Code)
+.vscode/
+
+# Node.js (React frontend)
+frontend/node_modules/
+frontend/build/
+frontend/.env

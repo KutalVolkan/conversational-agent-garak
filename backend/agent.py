@@ -3,7 +3,8 @@ import json
 import openai
 import logging
 from typing import List, Dict, Any
-import garak_tools
+import backend.garak_tools as garak_tools
+from backend.config import CONVERSATION_HISTORY_PATH 
 
 # Configure logging (DEBUG level for detailed output)
 logging.basicConfig(
@@ -18,7 +19,7 @@ class GarakAgent:
     Agent managing the conversation with GPT-4o and the Garak tool functions.
     It handles message history, OpenAI API calls with function calling, and state persistence.
     """
-    def __init__(self, history_file: str = "conversation_history.json"):
+    def __init__(self, history_file: str = CONVERSATION_HISTORY_PATH):
         """
         Initialize the GarakAgent. If a history file exists, load it to restore context;
         otherwise, start a new conversation using a system prompt.
