@@ -208,7 +208,8 @@ This project follows the same license as [Garak](https://github.com/NVIDIA/garak
 
 ## Acknowledgments
 
-- [NVIDIA Garak](https://github.com/NVIDIA/garak) – LLM red teaming and robustness scanner.
-- [OpenAI](https://platform.openai.com/docs/guides/gpt) – GPT-4o assistant.
-- [FastAPI](https://fastapi.tiangolo.com) – Modern, fast Python web framework.
-- [React](https://reactjs.org) – JavaScript library for building user interfaces.
+- [NVIDIA Garak](https://github.com/NVIDIA/garak) – LLM red teaming and robustness scanner
+
+## Contributions
+
+- [GeorgioDev](https://github.com/GeorgioDev) – for providing the UI 

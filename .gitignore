@@ -17,10 +17,9 @@ logs/
 
 # Garak scan outputs
 reports/
-scan_output.log
 
 # Local conversation memory
-data/conversation_history.json
+data/
 
 # VS Code settings (optional, if using VS Code)
 .vscode/
