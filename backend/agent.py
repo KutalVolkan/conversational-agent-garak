@@ -18,6 +18,7 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 class GarakAgent:
     """
     Agent managing the conversation with GPT-4o and the Garak tool functions.
@@ -233,7 +234,7 @@ class GarakAgent:
             self.save_history()
             return answer_content
 
-# Example usage:
+
 if __name__ == "__main__":
     agent = GarakAgent()
     # For debugging, use a sample message.

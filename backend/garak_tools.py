@@ -23,12 +23,14 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+
 def strip_ansi_codes(text: str) -> str:
     """
     Remove ANSI escape sequences from the given text.
     """
     ansi_escape = re.compile(r'\x1B(?:[@-Z\\-_]|\[[0-?]*[ -/]*[@-~])')
     return ansi_escape.sub('', text)
+
 
 def list_probes() -> List[str]:
     """
@@ -54,35 +56,6 @@ def list_probes() -> List[str]:
     ]
 
 
-def autocomplete_plugin(partial: str) -> List[str]:
-    """
-    Return matching plugin names based on a partial input string for easier discovery.
-    Args:
-        partial (str): Partial string to match against available plugin names.
-    Returns:
-        List[str]: A list of plugin names matching the partial input.
-                   If no matches are found, returns a list with an appropriate message.
-    Raises:
-        RuntimeError: If the Garak CLI returns an error while listing probes.
-    """
-    result = subprocess.run(
-        ["garak", "--list_probes"],
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        env={**os.environ, "PYTHONIOENCODING": "utf-8"}
-    )
-    if result.returncode != 0:
-        raise RuntimeError(f"Garak error: {result.stderr}")
-    all_plugins = [
-        line.split("probes:")[-1].strip()
-        for line in result.stdout.splitlines() if "probes:" in line
-    ]
-    matches = [p for p in all_plugins if partial.lower() in p.lower()]
-    return matches or [f"No matches found for '{partial}'"]
-
-
 def describe_feature(name: str) -> str:
     """
     Describe a Garak probe. If the exact name is not provided,
@@ -92,22 +65,25 @@ def describe_feature(name: str) -> str:
     Returns:
         str: Probe description or a message if not found.
     """
-    # Try autocompletion first
-    matches = autocomplete_plugin(name)
-    
-    # If no match found
-    if not matches or matches[0].startswith("No matches found"):
-        return f"No matching probe found for '{name}'."
-    
-    # Use the first match for now (could expand later to support exact or best match logic)
-    full_name = matches[0]
-
+    # Ensure full qualified name
+    if not name.startswith("probes."):
+        name = f"probes.{name}"
+        
     try:
-        # For demonstration we simply return the matching probe name.
-        return f"Description for probe '{full_name}' (detailed description would go here)."
+        result = subprocess.run(
+            ["garak", "--plugin_info", name],
+            capture_output=True,
+            text=True,
+            encoding="utf-8",
+            errors="replace",
+            env={**os.environ, "PYTHONIOENCODING": "utf-8"},
+        )
+        if result.returncode != 0:
+            return f"Failed to retrieve info for '{name}': {result.stderr.strip()}"
+        return strip_ansi_codes(result.stdout).strip()
     except Exception as e:
-        logger.error("Error describing probe '%s': %s", full_name, e)
-        return f"Error retrieving details for '{full_name}': {e}"
+        logger.error("Error describing probe '%s': %s", name, e)
+        return f"Error retrieving details for '{name}': {e}"
 
 
 def scan_model_rest(

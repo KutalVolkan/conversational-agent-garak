@@ -5,6 +5,7 @@ import uvicorn
 
 from backend.agent import GarakAgent
 
+
 app = FastAPI(title="Garak GPT-4o Assistant API")
 
 app.add_middleware(
@@ -18,14 +19,17 @@ app.add_middleware(
 # Initialize the agent (maintains state and conversation history).
 agent = GarakAgent()
 
+
 class ChatRequest(BaseModel):
     """Request model for sending a chat message."""
     message: str
+
 
 class ChatResponse(BaseModel):
     """Response model including the assistant's reply and full conversation history."""
     response: str
     history: list
+
 
 @app.post("/api/chat", response_model=ChatResponse)
 async def chat_endpoint(chat: ChatRequest):
@@ -47,6 +51,7 @@ async def chat_endpoint(chat: ChatRequest):
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 
+
 @app.get("/api/history")
 async def get_history():
     """
@@ -56,6 +61,7 @@ async def get_history():
         dict: A dictionary containing the conversation history.
     """
     return {"history": agent.messages}
+
 
 @app.post("/api/clear")
 async def clear_history():
@@ -73,6 +79,7 @@ async def clear_history():
         return {"status": "cleared"}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
