@@ -68,7 +68,7 @@ cd conversational-agent-garak
 
 - **Configure Your API Key**
 
-  Create a `.env` file in the backend directory and add your OpenAI key:
+  Create a `.env` file in the base directory and add your OpenAI key:
 
   ```env
   OPENAI_API_KEY=sk-...
@@ -106,8 +106,9 @@ This will start the FastAPI backend server at **http://127.0.0.1:8000**.
 From the `frontend` directory, run:
 
 ```bash
-npm start
-```
+cd frontend
+npm install
+npm run dev
 
 Access the application in your browser at the URL provided by your React development server (typically [http://localhost:3000](http://localhost:3000)).
 

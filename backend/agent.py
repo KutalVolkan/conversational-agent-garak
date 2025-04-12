@@ -5,6 +5,10 @@ import logging
 from typing import List, Dict, Any
 import backend.garak_tools as garak_tools
 from backend.config import CONVERSATION_HISTORY_PATH 
+from dotenv import load_dotenv
+
+# Initialize environment variables from .env file
+load_dotenv()
 
 # Configure logging (DEBUG level for detailed output)
 logging.basicConfig(
